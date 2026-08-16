@@ -14,6 +14,12 @@ from app.schemas.application import ApplicationOut
 
 router = APIRouter(prefix="/apply", tags=["candidate-application"])
 
+@router.get("/{application_id}/status", response_model=ApplicationOut)
+def get_application_status(application_id: int, db: Session = Depends(get_db)):
+    application = db.get(Application, application_id)
+    if not application:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Application not found")
+    return application
 
 @router.post("/", response_model=ApplicationOut)
 def apply_to_job(
