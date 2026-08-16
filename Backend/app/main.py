@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
 app = FastAPI(
-    title="Hirly API",
+    title="Hirely API",
     description="Agentic AI Recruitment System",
     version="0.1.0",
 )
@@ -10,7 +10,7 @@ app = FastAPI(
 @app.get("/")
 def root():
     return {
-        "name": "Hirly",
+        "name": "Hirely",
         "status": "running",
         "version": "0.1.0",
     }
