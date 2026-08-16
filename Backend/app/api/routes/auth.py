@@ -42,3 +42,4 @@ def login(payload: LoginRequest, db: Session = Depends(get_db)):
 
     token = create_access_token(subject=str(user.id), extra_claims={"role": user.role.value})
     return TokenResponse(access_token=token)
+###### 
