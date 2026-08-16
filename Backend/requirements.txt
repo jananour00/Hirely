@@ -16,6 +16,8 @@ sqlalchemy
 psycopg[binary]
 alembic
 pgvector
+python-jose[cryptography]
+passlib[bcrypt]
 
 # Cache
 redis
