@@ -1,0 +1,16 @@
+# ==============================
+# Hirly Backend
+# ==============================
+
+# Web Framework
+fastapi
+uvicorn[standard]
+
+# Configuration & Environment
+pydantic
+pydantic-settings
+python-dotenv
+
+# Testing
+pytest
+httpx
