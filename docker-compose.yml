@@ -1,0 +1,38 @@
+services:
+
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: hirly-postgres
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: hirly
+      POSTGRES_USER: hirly
+      POSTGRES_PASSWORD: hirly_dev_password
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+
+  redis:
+    image: redis:7-alpine
+    container_name: hirly-redis
+    restart: unless-stopped
+
+    ports:
+      - "6379:6379"
+
+    volumes:
+      - redis_data:/data
+
+
+volumes:
+
+  postgres_data:
+    name: hirly-postgres-data
+
+  redis_data:
+    name: hirly-redis-data
