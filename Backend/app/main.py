@@ -5,6 +5,7 @@ from app.api.routes.users import router as users_router
 from app.api.routes.applications import router as applications_router
 from app.api.routes.jobs import router as jobs_router
 from app.api.routes.applications_public import router as apply_router
+from app.api.routes.candidates import router as candidates_router
 
 app = FastAPI(
     title="Hirely API",
@@ -17,6 +18,8 @@ app.include_router(users_router)
 app.include_router(applications_router)
 app.include_router(jobs_router)
 app.include_router(apply_router)
+app.include_router(candidates_router)
+
 
 @app.get("/")
 def root():
