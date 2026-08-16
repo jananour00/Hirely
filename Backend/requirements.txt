@@ -21,6 +21,8 @@ passlib[bcrypt]
 
 # Cache
 redis
+pypdf
+python-docx
 
 # Testing
 pytest
