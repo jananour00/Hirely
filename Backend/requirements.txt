@@ -23,6 +23,7 @@ passlib[bcrypt]
 redis
 pypdf
 python-docx
+anthropic
 
 # Testing
 pytest

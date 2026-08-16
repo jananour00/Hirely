@@ -9,6 +9,8 @@ class Settings(BaseSettings):
     app_name: str = "Hirely"
     app_env: str = "development"
     app_debug: bool = True
+    anthropic_api_key: str
+    anthropic_model: str = "claude-sonnet-4-6"
 
     database_url: str
     redis_url: str
