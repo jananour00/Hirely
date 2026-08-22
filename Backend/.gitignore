@@ -1,0 +1,101 @@
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# =========================
+# Environment / Secrets
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# IDEs / Editors
+# =========================
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# =========================
+# Testing / Coverage
+# =========================
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+
+# =========================
+# Type Checking / Linters
+# =========================
+.mypy_cache/
+.pyre/
+.ruff_cache/
+
+# =========================
+# Build / Packaging
+# =========================
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+# =========================
+# Jupyter
+# =========================
+.ipynb_checkpoints/
+
+# =========================
+# Logs
+# =========================
+*.log
+logs/
+
+# =========================
+# Database
+# =========================
+*.sqlite
+*.sqlite3
+*.db
+
+# =========================
+# OS
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# AI / ML
+# =========================
+models/
+checkpoints/
+*.pt
+*.pth
+*.ckpt
+*.onnx
+
+# =========================
+# Uploaded / Generated Files
+# =========================
+uploads/
+storage/
+tmp/
+temp/
+
+# =========================
+# Cache
+# =========================
+.cache/
+*.cache

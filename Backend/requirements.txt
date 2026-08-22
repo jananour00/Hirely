@@ -1,0 +1,31 @@
+# ==============================
+# Hirly Backend
+# ==============================
+
+# Web Framework
+fastapi
+uvicorn[standard]
+
+# Configuration & Environment
+pydantic
+pydantic-settings
+python-dotenv
+
+# Database
+sqlalchemy
+psycopg[binary]
+alembic
+pgvector
+python-jose[cryptography]
+passlib[bcrypt]
+
+# Cache
+redis
+pypdf
+python-docx
+anthropic
+openai
+
+# Testing
+pytest
+httpx
