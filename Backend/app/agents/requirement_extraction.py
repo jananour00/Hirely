@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from app.core.agent_llm_client import call_with_tool
 
 SYSTEM_PROMPT = """You are the Requirement Extraction Agent inside Hirly, an \
@@ -76,3 +77,20 @@ def extract_requirements(raw_description: str) -> dict:
     result = response["result"]
     result["source_text"] = raw_description
     return result
+=======
+def extract_requirements(raw_description: str) -> dict:
+    """
+    Stub Requirement Extraction Agent.
+    Replace with an Anthropic API call (structured/tool-use output) later —
+    keep this function's signature and return shape the same so nothing
+    downstream has to change.
+    """
+    return {
+        "title": raw_description.split(",")[0].strip()[:200] or "Untitled Role",
+        "experience": "unspecified",
+        "required_skills": [],
+        "preferred_skills": [],
+        "responsibilities": [],
+        "source_text": raw_description,
+    }
+>>>>>>> 11370235c04fdecb3e197487b0bee4d61e3b868a

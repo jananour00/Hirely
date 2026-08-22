@@ -24,7 +24,10 @@ redis
 pypdf
 python-docx
 anthropic
+<<<<<<< HEAD
 openai
+=======
+>>>>>>> 11370235c04fdecb3e197487b0bee4d61e3b868a
 
 # Testing
 pytest

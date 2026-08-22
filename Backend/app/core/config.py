@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     app_name: str = "Hirely"
     app_env: str = "development"
     app_debug: bool = True
+<<<<<<< HEAD
     anthropic_api_key: str = ""
     anthropic_model: str = "claude-sonnet-4-6"
 
@@ -22,6 +23,11 @@ class Settings(BaseSettings):
     openrouter_api_key: str = ""
     openrouter_model: str = "meta-llama/llama-3.3-70b-instruct"
 
+=======
+    anthropic_api_key: str
+    anthropic_model: str = "claude-sonnet-4-6"
+
+>>>>>>> 11370235c04fdecb3e197487b0bee4d61e3b868a
     database_url: str
     redis_url: str
 
