@@ -1,0 +1,50 @@
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: hirly
+      POSTGRES_PASSWORD: hirly_dev_pw
+      POSTGRES_DB: hirly
+    ports:
+      - "5432:5432"
+    volumes:
+      - hirly_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hirly -d hirly"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./Backend
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      # Override host-based URLs from .env.example with in-network service names
+      DATABASE_URL: postgresql+psycopg://hirly:hirly_dev_pw@db:5432/hirly
+      REDIS_URL: redis://redis:6379/0
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./Backend:/app
+
+volumes:
+  hirly_pg_data:
