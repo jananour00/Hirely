@@ -15,6 +15,52 @@ and data model.
 ## Screenshots
 
 <img width="1903" height="851" alt="image" src="https://github.com/user-attachments/assets/71a05cf1-ccd2-4467-9933-08082733db95" />
+## Agent Architecture
+ 
+Each requisition and application moves through a pipeline of LLM-backed
+agents, orchestrated by `orchestrator/engine.py` and routed through a shared
+`app/core/agent_llm_client.py` (Groq / OpenRouter).
+ 
+```mermaid
+flowchart TD
+    subgraph Job Creation
+        A[Recruiter drafts requisition] --> B[requirement_extraction.py<br/>Requirement Extraction Agent]
+        B --> C[jd_generator.py<br/>JD Generation Agent]
+        C --> D[Job Published]
+    end
+ 
+    subgraph Candidate Pipeline
+        D --> E[Candidate Applies<br/>APPLIED]
+        E --> F[cv_parser.py<br/>CV Parsing Agent<br/>CV_PROCESSING]
+        F --> G[ats_matcher.py<br/>ATS Matching Agent<br/>ATS_SCREENING]
+        G --> H{Human Review<br/>Gate}
+        H -->|Approve| I[AI_INTERVIEW]
+        H -->|Reject| R[REJECTED]
+        I --> J[INTERVIEW_EVALUATION]
+        J --> K[HR_SCHEDULING]
+        K --> L[HR_INTERVIEW]
+        L --> M[OFFER]
+        M --> N[HIRED]
+    end
+ 
+    O[(Audit Log)] -.tracks every transition.-> H
+    O -.-> I
+    O -.-> R
+    O -.-> N
+```
+ 
+- **Requirement Extraction Agent** — turns a recruiter's raw requisition
+  input into structured role requirements.
+- **JD Generation Agent** — produces the published job description from the
+  extracted requirements.
+- **CV Parsing Agent** — parses an uploaded resume into a structured
+  candidate profile.
+- **ATS Matching Agent** — scores the parsed candidate against the role's
+  requirements and produces the evidence shown on the human-review screen.
+- **Orchestrator (`orchestrator/engine.py`)** — drives every stage
+  transition and writes the audit-log entry for each one, so the full
+  application timeline can be reconstructed for either the `HIRED` or
+  `REJECTED` path.
 
 ## Features
 
