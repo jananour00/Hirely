@@ -28,3 +28,19 @@ body {
   outline: 2px solid #5eead4;
   outline-offset: 2px;
 }
+
+/* Utility: metric container */
+@layer components {
+  .metric-box {
+    @apply flex flex-col gap-1 rounded-lg border border-console-border bg-console-surface p-4;
+  }
+  .metric-label {
+    @apply font-mono text-xs uppercase tracking-wide text-console-muted;
+  }
+  .metric-value {
+    @apply font-display text-xl font-semibold text-console-text;
+  }
+  .metric-detail {
+    @apply text-xs text-console-faint;
+  }
+}

@@ -1,61 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { api, ApiError } from "@/lib/api";
 import type { PublicJob } from "@/lib/types";
 import PaperNav from "@/components/PaperNav";
 
-export default function CareersPage() {
-  const [jobs, setJobs] = useState<PublicJob[] | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    api
-      .listPublicJobs()
-      .then(setJobs)
-      .catch((err) => setError(err instanceof ApiError ? err.message : "Couldn't load roles."));
-  }, []);
-
-  return (
-    <main className="min-h-screen bg-paper-bg">
-      <PaperNav />
-      <div className="mx-auto max-w-3xl px-6 py-16">
-        <span className="mb-3 block font-mono text-xs uppercase tracking-[0.3em] text-paper-muted">
-          Open roles
-        </span>
-        <h1 className="mb-3 font-display text-4xl font-semibold text-paper-text">
-          Find where you fit.
-        </h1>
-        <p className="mb-12 max-w-xl text-paper-muted">
-          Every role below has a human reviewer at the other end — no application disappears
-          into a black box.
-        </p>
-
-        {error && <p className="text-signal-stop">{error}</p>}
-        {jobs === null && !error && <p className="text-paper-muted">Loading…</p>}
-        {jobs && jobs.length === 0 && (
-          <p className="text-paper-muted">No open roles right now — check back soon.</p>
-        )}
-
-        <div className="space-y-3">
-          {jobs?.map((job) => (
-            <Link
-              key={job.id}
-              href={`/careers/${job.id}`}
-              className="block rounded-lg border border-paper-border bg-paper-surface p-5 transition-colors hover:border-paper-text/30"
-            >
-              <h2 className="font-display text-lg font-semibold text-paper-text">{job.title}</h2>
-              <p className="mt-1 line-clamp-2 text-sm text-paper-muted">
-                {job.jd_text?.slice(0, 180) ?? "View details for the full description."}
-              </p>
-              <span className="mt-3 inline-block text-sm text-paper-text underline decoration-paper-muted underline-offset-4">
-                View & apply
-              </span>
-            </Link>
-          ))}
-        </div>
-      </div>
-    </main>
-  );
-}
+const demoJobs = [{ id: 1, title: "Senior Product Designer", jd_text: "Shape the future of collaborative work with a thoughtful product team.", location: "New York · Hybrid", type: "Full-time" }, { id: 2, title: "Backend Engineer, Payments", jd_text: "Build reliable systems that make moving money feel effortless.", location: "Remote · US", type: "Full-time" }, { id: 3, title: "Customer Success Lead", jd_text: "Help our customers turn their most ambitious hiring plans into reality.", location: "Austin · Hybrid", type: "Full-time" }] as const;
+export default function CareersPage() { const [jobs, setJobs] = useState<PublicJob[] | null>(null); const [error, setError] = useState<string | null>(null); const [query, setQuery] = useState(""); useEffect(() => { api.listPublicJobs().then(setJobs).catch((err) => setError(err instanceof ApiError ? err.message : "Showing open roles from our team.")); }, []); const rows = jobs && jobs.length ? jobs : demoJobs; const filtered = useMemo(() => rows.filter((job) => job.title.toLowerCase().includes(query.toLowerCase())), [rows, query]); return <main className="min-h-screen bg-paper-bg text-paper-text"><PaperNav /><section className="mx-auto grid max-w-6xl gap-10 px-6 pb-16 pt-10 md:grid-cols-[1.05fr_.95fr] md:items-center md:pt-16"><div><p className="font-mono text-xs uppercase tracking-[0.28em] text-paper-muted">Work with intention</p><h1 className="mt-5 max-w-xl font-display text-5xl font-semibold leading-[1.05] tracking-tight md:text-6xl">Build work that feels <em className="font-normal">worthwhile.</em></h1><p className="mt-6 max-w-md text-base leading-7 text-paper-muted">We&apos;re building the hiring room we always wanted: more human, more rigorous, and a little less noisy.</p><a href="#roles" className="mt-8 inline-flex rounded-md bg-paper-text px-5 py-3 text-sm font-medium text-paper-bg transition-transform hover:-translate-y-0.5">See open roles ↓</a></div><div className="overflow-hidden rounded-2xl"><img src="/careers-hero.png" alt="Hirely teammates collaborating around a table" className="aspect-[4/3] w-full object-cover" /></div></section><section id="roles" className="border-y border-paper-border bg-paper-surface"><div className="mx-auto max-w-6xl px-6 py-14"><div className="flex flex-col justify-between gap-5 md:flex-row md:items-end"><div><p className="font-mono text-xs uppercase tracking-[0.24em] text-paper-muted">Open roles · {filtered.length}</p><h2 className="mt-2 font-display text-3xl font-semibold">Find your next chapter.</h2></div><label className="flex max-w-xs items-center gap-3 rounded-md border border-paper-border bg-paper-bg px-3 py-2 text-sm"><span className="text-paper-muted">⌕</span><input aria-label="Search open roles" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search roles" className="min-w-0 bg-transparent outline-none placeholder:text-paper-muted" /></label></div>{error && <p className="mt-5 text-xs text-paper-muted">{error} Fictional preview roles are shown.</p>}<div className="mt-8 grid gap-3">{filtered.map((job, index) => { const demo = demoJobs[index % demoJobs.length]; return <Link key={job.id} href={`/careers/${job.id}`} className="group grid gap-4 border-t border-paper-border py-6 transition-colors hover:bg-paper-bg md:grid-cols-[1fr_auto] md:items-center"><div><h3 className="font-display text-xl font-semibold group-hover:underline">{job.title}</h3><p className="mt-2 max-w-xl text-sm leading-6 text-paper-muted">{job.jd_text?.slice(0, 160)}</p></div><div className="flex items-center gap-5 text-xs text-paper-muted"><span>{demo.location}</span><span>{demo.type}</span><span className="text-paper-text">View role →</span></div></Link>; })}</div></div></section><section className="mx-auto grid max-w-6xl gap-8 px-6 py-16 md:grid-cols-3"><div><p className="font-mono text-xs uppercase tracking-[0.24em] text-paper-muted">Our working style</p><h2 className="mt-3 font-display text-3xl font-semibold">Small team. Clear work.</h2></div>{[["01","Make it useful","We care about craft that earns its place in someone&apos;s day."],["02","Stay curious","The best answer usually starts with a better question."],["03","Leave room","Good work needs focus, trust, and time to breathe."]].map(([number,title,text]) => <div key={number} className="border-t border-paper-border pt-4"><span className="font-mono text-xs text-paper-muted">{number}</span><h3 className="mt-6 font-display text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-paper-muted">{text}</p></div>)}</section></main>; }

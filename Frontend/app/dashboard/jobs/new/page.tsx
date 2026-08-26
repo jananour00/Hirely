@@ -4,63 +4,9 @@ import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { api, ApiError } from "@/lib/api";
 
+const examples = ["Senior backend engineer, 5+ years, Python/FastAPI, owns our payments service, remote-friendly", "Product marketing manager to build our launch engine, 4+ years in B2B SaaS, New York preferred"];
 export default function NewJobPage() {
-  const router = useRouter();
-  const [rawDescription, setRawDescription] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [submitting, setSubmitting] = useState(false);
-
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault();
-    setError(null);
-    setSubmitting(true);
-    try {
-      const job = await api.createJob(rawDescription);
-      router.push(`/dashboard/jobs/${job.id}`);
-    } catch (err) {
-      setError(err instanceof ApiError ? err.message : "Couldn't draft the requisition.");
-      setSubmitting(false);
-    }
-  }
-
-  return (
-    <div className="mx-auto max-w-2xl">
-      <h1 className="font-display text-2xl font-semibold text-console-text">New requisition</h1>
-      <p className="mt-1 mb-8 text-sm text-console-muted">
-        Describe the role in plain language. Hirely's requirement-extraction and JD-generation
-        agents turn it into a structured requisition you can review before publishing.
-      </p>
-
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label htmlFor="raw" className="mb-1.5 block text-xs text-console-muted">
-            Role description
-          </label>
-          <textarea
-            id="raw"
-            required
-            rows={10}
-            value={rawDescription}
-            onChange={(e) => setRawDescription(e.target.value)}
-            placeholder="Senior backend engineer, 5+ years, Python/FastAPI, owns our payments service, remote-friendly, reports to the VP of Engineering…"
-            className="w-full resize-y rounded-md border border-console-border bg-console-surface px-3 py-2.5 text-sm text-console-text outline-none focus:border-signal-go"
-          />
-        </div>
-
-        {error && (
-          <p className="rounded-md border border-signal-stop/30 bg-signal-stop/10 px-3 py-2 text-sm text-signal-stop">
-            {error}
-          </p>
-        )}
-
-        <button
-          type="submit"
-          disabled={submitting}
-          className="rounded-md bg-signal-go px-5 py-2.5 text-sm font-medium text-console-bg transition-opacity hover:opacity-90 disabled:opacity-50"
-        >
-          {submitting ? "Drafting JD…" : "Generate job description"}
-        </button>
-      </form>
-    </div>
-  );
+  const router = useRouter(); const [rawDescription, setRawDescription] = useState(""); const [error, setError] = useState<string | null>(null); const [submitting, setSubmitting] = useState(false);
+  async function handleSubmit(e: FormEvent) { e.preventDefault(); setError(null); setSubmitting(true); try { const job = await api.createJob(rawDescription); router.push(`/dashboard/jobs/${job.id}`); } catch (err) { setError(err instanceof ApiError ? err.message : "Couldn&apos;t draft the requisition."); setSubmitting(false); } }
+  return <main className="grid gap-8 lg:grid-cols-[220px_1fr] lg:gap-14"><aside className="hidden lg:block"><p className="font-mono text-[10px] uppercase tracking-[0.25em] text-signal-go">Workspace</p><h1 className="mt-3 font-display text-xl font-semibold text-console-text">New requisition</h1><div className="mt-8 flex flex-col gap-5 text-sm"><p className="flex items-center gap-3 text-console-text"><span className="flex size-6 items-center justify-center rounded-full bg-signal-go text-xs font-medium text-console-bg">1</span> Describe the role</p><p className="flex items-center gap-3 text-console-faint"><span className="flex size-6 items-center justify-center rounded-full border border-console-border text-xs">2</span> Review the draft</p><p className="flex items-center gap-3 text-console-faint"><span className="flex size-6 items-center justify-center rounded-full border border-console-border text-xs">3</span> Publish</p></div></aside><div className="max-w-2xl"><p className="font-mono text-xs uppercase tracking-[0.24em] text-signal-go lg:hidden">Step 01 / 03</p><h2 className="font-display text-3xl font-semibold tracking-tight text-console-text">Give the role a point of view.</h2><p className="mt-3 max-w-xl text-sm leading-6 text-console-muted">Start with the messy version. Hirely will extract requirements and draft a clear, inclusive job description for your team to approve.</p><form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-5"><div><label htmlFor="raw" className="mb-2 block text-xs font-medium text-console-text">Role brief <span className="text-console-faint">· required</span></label><textarea id="raw" required rows={9} value={rawDescription} onChange={(e) => setRawDescription(e.target.value)} placeholder="Tell us what this person will own, how they will work, and what good looks like…" className="w-full resize-y rounded-lg border border-console-border bg-console-surface px-4 py-4 text-sm leading-6 text-console-text outline-none transition-colors placeholder:text-console-faint focus:border-signal-go" /><p className="mt-2 text-xs text-console-faint">Be specific about outcomes, not just a list of tools.</p></div><div className="rounded-lg border border-console-border bg-console-surface p-4"><p className="font-mono text-[10px] uppercase tracking-widest text-console-muted">Try a starting point</p><div className="mt-3 flex flex-col gap-2">{examples.map((example) => <button type="button" key={example} onClick={() => setRawDescription(example)} className="text-left text-xs leading-5 text-console-muted transition-colors hover:text-signal-go">{example} →</button>)}</div></div>{error && <p className="rounded-md border border-signal-stop/30 bg-signal-stop/10 px-3 py-2 text-sm text-signal-stop">{error}</p>}<button type="submit" disabled={submitting} className="self-start rounded-md bg-signal-go px-5 py-3 text-sm font-medium text-console-bg transition-opacity hover:opacity-90 disabled:opacity-50">{submitting ? "Drafting job description…" : "Generate draft →"}</button></form></div></main>;
 }
